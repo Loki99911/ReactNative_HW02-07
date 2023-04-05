@@ -13,6 +13,9 @@ import {
   Image,
 } from "react-native";
 import styles from "../../styles/styles";
+import { useDispatch } from "react-redux";
+import { signUp } from "../../redux/auth/authOperations";
+
 
 const initialState = {
   photo: "",
@@ -26,6 +29,8 @@ const RegistrationScreen = ({ navigation }) => {
   const [secureEntry, setSecureEntry] = useState(true);
   const [inFocus, setInFocus] = useState("");
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const dispatch = useDispatch();
+
 
   const togglePass = () => {
     setSecureEntry(!secureEntry);
@@ -33,7 +38,7 @@ const RegistrationScreen = ({ navigation }) => {
 
   const onRegister = (e) => {
     e.preventDefault();
-    console.log(registrationState);
+    dispatch(signUp(registrationState));
     setRegistrationState(initialState);
   };
 

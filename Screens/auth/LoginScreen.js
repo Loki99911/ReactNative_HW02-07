@@ -11,6 +11,8 @@ import {
   View,
 } from "react-native";
 import styles from "../../styles/styles";
+import { useDispatch } from "react-redux";
+import { signIn } from "../../redux/auth/authOperations";
 
 const initialState = {
   email: "",
@@ -22,6 +24,7 @@ const LoginScreen = ({ navigation }) => {
   const [secureEntry, setSecureEntry] = useState(true);
   const [inFocus, setInFocus] = useState("");
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const togglePass = () => {
     setSecureEntry(!secureEntry);
@@ -29,7 +32,7 @@ const LoginScreen = ({ navigation }) => {
 
   const onSignIn = (e) => {
     e.preventDefault();
-    console.log(loginState);
+    dispatch(signIn(loginState));
     setLoginState(initialState);
   };
 
