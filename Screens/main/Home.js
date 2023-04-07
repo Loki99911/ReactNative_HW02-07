@@ -1,14 +1,17 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import PostsScreen from "../main/PostsScreen";
+import PostsScreen from "../nested/PostsScreen";
 import CreatePostsScreen from "../main/CreatePostsScreen";
 import ProfileScreen from "../main/ProfileScreen";
-import { Feather} from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../redux/auth/authOperations";
 
 const MainTab = createBottomTabNavigator();
 
-const Home = ({ navigation}) => {
+const Home = ({ navigation }) => {
+  const dispatch = useDispatch();
   return (
     <MainTab.Navigator
       screenOptions={{
@@ -34,7 +37,18 @@ const Home = ({ navigation}) => {
         name="Posts"
         component={PostsScreen}
         options={{
-          headerShown: false,
+          title: "Публикации",
+          headerTitleAlign: "center",
+          headerRight: () => (
+            <TouchableOpacity
+              style={{ paddingRight: 16 }}
+              onPress={() => {
+                dispatch(logOut());
+              }}
+            >
+              <Feather name="log-out" size={24} color="#BDBDBD" />
+            </TouchableOpacity>
+          ),
           tabBarIcon: ({ color }) => (
             <Feather name="grid" size={24} color={color} />
           ),

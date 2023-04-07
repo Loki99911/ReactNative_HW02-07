@@ -22,7 +22,6 @@ export const authSlice = createSlice({
         state.isLoggedIn = true;
       })
       .addCase(signIn.fulfilled, (state, { payload }) => {
-        console.log(payload);
         state.userData.id = payload.uid;
         state.userData.photo = payload.photo;
         state.userData.name = payload.name;
@@ -39,7 +38,4 @@ export const authSlice = createSlice({
       .addCase(logOut.fulfilled, () => ({
         ...state,
       })),
-
-  // .addCase(refreshUser.pending, pending)
-  // .addCase(refreshUser.rejected, rejected),
 });

@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   View,
+  TouchableOpacity,
 } from "react-native";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
@@ -14,7 +15,12 @@ import { Feather } from "@expo/vector-icons";
 
 import styles from "../../styles/styles";
 import { Camera } from "expo-camera";
-import { TouchableOpacity } from "react-native";
+import uploadPostImg from "../../firebase/uploadPostImg";
+
+import { useDispatch, useSelector } from "react-redux";
+import { getUserId } from "../../redux/auth/authSelectors";
+import { addPost } from "../../redux/posts/postsOperations";
+
 
 const initialState = {
   photo: "",
@@ -28,6 +34,8 @@ const CreatePostsScreen = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState(null);
   const [disabledBtn, setDisabledBtn] = useState(true);
+  const userId = useSelector(getUserId);
+  const dispatch = useDispatch();
 
   const keyboardHide = () => {
     setIsKeyboardOpen(false);
@@ -48,17 +56,24 @@ const CreatePostsScreen = ({ navigation }) => {
       latitude: current.coords.latitude.toString(),
       longitude: current.coords.longitude.toString(),
     };
-    navigation.navigate("DefaultPostsScreen", {
-      ...postState,
-      ...currentLocation,
-    });
+    navigation.navigate("Posts");
+    const postUrl = await uploadPostImg(postState.photo, userId); //Передаём на сервер картинку поста
+    const newPost = {
+      timestamp: Date.now().toString(),
+      photo: postUrl,
+      photoName: postState.name,
+      location: currentLocation,
+      locationName: postState.locationName,
+      userId,
+    };
+    dispatch(addPost(newPost));
     setPostState(initialState);
     setDisabledBtn(true);
   };
 
   const onRemoveForm = () => {
     setPostState(initialState);
-  }
+  };
 
   useEffect(() => {
     if (postState.photo && postState.name && postState.locationName) {
@@ -91,8 +106,6 @@ const CreatePostsScreen = ({ navigation }) => {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
-
-  // console.log(postState);
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>

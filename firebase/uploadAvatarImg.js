@@ -1,7 +1,7 @@
-import { storage } from "../firebase/config";
+import { storage } from "./config";
 
 // функция для загрузки изображения
-async function uploadImage(imageUri, uid) {
+async function uploadAvatarImg(imageUri, uid) {
   const response = await fetch(imageUri);
   const blob = await response.blob();
   const filename = `${uid}-${new Date().getTime()}`;
@@ -12,6 +12,4 @@ async function uploadImage(imageUri, uid) {
   return url;
 }
 
-export default uploadImage;
-// вызов функции для загрузки изображения
-// const imageUrl = await uploadImage("file:///path/to/image");
+export default uploadAvatarImg;

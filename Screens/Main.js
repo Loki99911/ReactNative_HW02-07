@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 
 import { updateUserStatus } from "../redux/auth/authOperations";
 import { getIsLoggedIn } from "../redux/auth/authSelectors";
+import MapScreen from "./nested/MapScreen";
+import CommentsScreen from "./nested/CommentsScreen";
 
 const AuthStack = createNativeStackNavigator();
 
@@ -37,11 +39,29 @@ export default function Main() {
             />
           </>
         ) : (
-          <AuthStack.Screen
-            name="Home"
-            component={Home}
-            options={{ headerShown: false }}
-          />
+          <>
+            <AuthStack.Screen
+              name="Home"
+              component={Home}
+              options={{ headerShown: false }}
+            />
+            <AuthStack.Screen
+              name="CommentsScreen"
+              component={CommentsScreen}
+              options={{
+                title: "Комментарии",
+                headerTitleAlign: "center",
+              }}
+            />
+            <AuthStack.Screen
+              name="MapScreen"
+              component={MapScreen}
+              options={{
+                title: "Карта",
+                headerTitleAlign: "center",
+              }}
+            />
+          </>
         )}
       </AuthStack.Navigator>
     </NavigationContainer>

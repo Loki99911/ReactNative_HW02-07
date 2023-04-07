@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { auth } from "../../firebase/config";
-import uploadImage from "../../firebase/uploadImg";
+import uploadAvatarImg from "../../firebase/uploadAvatarImg";
 
 export const signUp = createAsyncThunk(
   "auth/register",
@@ -11,13 +11,13 @@ export const signUp = createAsyncThunk(
         userData.password
       );
       const newUserData = newUser.user;
-      const photoUrl = await uploadImage(userData.photo, newUserData.uid);
+      const photoUrl = await uploadAvatarImg(userData.photo, newUserData.uid);
 
       await newUserData.updateProfile({
         displayName: userData.name,
         photoURL: photoUrl,
       });
-      
+
       return {
         uid: newUserData.uid,
         photo: photoUrl,
@@ -34,9 +34,8 @@ export const signIn = createAsyncThunk(
   "auth/login",
   async (userData, { rejectWithValue }) => {
     try {
-      const {email, password } = userData;
+      const { email, password } = userData;
       const user = await auth.signInWithEmailAndPassword(email, password);
-      console.log(user);
       return {
         uid: user.user.uid,
         photo: user.user.photoURL,
@@ -56,7 +55,6 @@ export const updateUserStatus = createAsyncThunk(
       const user = await new Promise((resolve, reject) => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
           resolve(user);
-          // unsubscribe();
         }, reject);
       });
 
@@ -77,12 +75,24 @@ export const updateUserStatus = createAsyncThunk(
   }
 );
 
-export const logOut = createAsyncThunk(
-  "auth/logout",
-  async () => {
+export const logOut = createAsyncThunk("auth/logout", async () => {
+  try {
+    await auth.signOut();
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
+
+export const updatePhoto = createAsyncThunk(
+  "auth/updatePhoto",
+  async (photo, { getState, rejectWithValue }) => {
     try {
-      await auth.signOut();
-      console.log("logoutOper");
+      const { uid } = getState().auth.currentUser;
+      const photoUrl = await uploadAvatarImg(photo, uid);
+      await auth.currentUser.updateProfile({
+        photoURL: photoUrl,
+      });
+      return photoUrl;
     } catch (error) {
       return rejectWithValue(error);
     }

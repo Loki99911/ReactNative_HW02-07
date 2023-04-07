@@ -4,12 +4,12 @@ import "firebase/compat/auth";
 import "firebase/compat/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDCIGwAkUV-LR2gJOe1R9rPqOheEG4W-eA",
-  authDomain: "reactnativehw-ae0cf.firebaseapp.com",
-  projectId: "reactnativehw-ae0cf",
-  storageBucket: "reactnativehw-ae0cf.appspot.com",
-  messagingSenderId: "37238810044",
-  appId: "1:37238810044:web:08f58ad536901ff1adf7b9",
+  apiKey: "AIzaSyCjgtCnQjVCZKC9asHPsowxOqLFkmDKscw",
+  authDomain: "native-b5e69.firebaseapp.com",
+  projectId: "native-b5e69",
+  storageBucket: "native-b5e69.appspot.com",
+  messagingSenderId: "892224413451",
+  appId: "1:892224413451:web:97d858ebae6bdc20c2cc0e",
 };
 
 firebase.initializeApp(firebaseConfig);
