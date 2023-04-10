@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { auth } from "../../firebase/config";
 import uploadAvatarImg from "../../firebase/uploadAvatarImg";
+import { Toast } from "toastify-react-native";
 
 export const signUp = createAsyncThunk(
   "auth/register",
@@ -25,6 +26,7 @@ export const signUp = createAsyncThunk(
         email: newUserData.email,
       };
     } catch (error) {
+      Toast.error(`${error.code}`);
       return rejectWithValue(error);
     }
   }
@@ -43,6 +45,7 @@ export const signIn = createAsyncThunk(
         email: user.user.email,
       };
     } catch (error) {
+      Toast.error(`${error.code}`);
       return rejectWithValue(error);
     }
   }
@@ -70,6 +73,7 @@ export const updateUserStatus = createAsyncThunk(
         return { currentUser: null, isLoggedIn: false };
       }
     } catch (error) {
+      Toast.error(`${error.code}`);
       return rejectWithValue(error);
     }
   }
@@ -79,6 +83,7 @@ export const logOut = createAsyncThunk("auth/logout", async () => {
   try {
     await auth.signOut();
   } catch (error) {
+    Toast.error(`${error.code}`);
     return rejectWithValue(error);
   }
 });
@@ -94,6 +99,7 @@ export const updatePhoto = createAsyncThunk(
       });
       return photoUrl;
     } catch (error) {
+      Toast.error(`${error.code}`);
       return rejectWithValue(error);
     }
   }

@@ -11,6 +11,7 @@ import { updateUserStatus } from "../redux/auth/authOperations";
 import { getIsLoggedIn } from "../redux/auth/authSelectors";
 import MapScreen from "./nested/MapScreen";
 import CommentsScreen from "./nested/CommentsScreen";
+import Container from "toastify-react-native";
 
 const AuthStack = createNativeStackNavigator();
 
@@ -24,6 +25,18 @@ export default function Main() {
 
   return (
     <NavigationContainer>
+      <Container
+        position="center"
+        style={{
+          borderRadius: 20,
+          fontSize: 8,
+          width: 350,
+          height: 100,
+        }}
+        textStyle={{ fontSize: 8 }}
+        duration={5000}
+        animationStyle={"zoomInOut"}
+      />
       <AuthStack.Navigator>
         {!isLogedIn ? (
           <>
